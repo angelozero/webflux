@@ -17,8 +17,6 @@ public class DummyDataService {
     private final DataRepository dataRepository;
 
     public void execute() {
-        System.out.println("\n Iniciando comunicação com base de dados MONGO-DB - Webflux \n");
-
         dataRepository.deleteAll()
                 .thenMany(
                         Flux.just("1 - Angelo", "2 - Brune", "3 - Pietro", "4 - Everton")
@@ -28,7 +26,5 @@ public class DummyDataService {
                                         .build())
                                 .flatMap(dataRepository::save))
                 .subscribe(System.out::println);
-
-        System.out.println("\n Finalizando comunicação com base de dados MONGO-DB - Webflux \n");
     }
 }

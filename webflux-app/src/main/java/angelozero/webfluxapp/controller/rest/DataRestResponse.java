@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataRestResponse {
 
-    @JsonProperty("identificador")
+    @JsonProperty("id")
     private String id;
 
     @JsonProperty("nome")

@@ -5,19 +5,20 @@ import angelozero.webfluxapp.service.domain.DataDomain;
 import angelozero.webfluxapp.service.mapper.DataServiceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SaveDataService {
+public class SaveAllDataService {
 
     private final DataRepository dataRepository;
     private final DataServiceMapper mapper;
 
-    public void execute(DataDomain dataDomain) {
+    public void execute(List<DataDomain> dataDomain) {
         try {
-            long id = (long) (Math.random() * (100));
-            Mono.just(dataRepository.save(mapper.toEntity(id, dataDomain)));
+            Flux.just(dataRepository.saveAll(mapper.toEntityList(dataDomain)));
 
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao salvar o dado");

@@ -12,8 +12,12 @@ public interface DataServiceMapper {
 
     DataDomain toDomain(DataEntity dataEntity);
 
-    List<DataDomain> toDomain(List<DataEntity> dataEntity);
-
     @Mapping(target = "id", source = "id")
-    DataEntity toEntity(String id, DataDomain dataDomain);
+    DataEntity toEntity(Long id, DataDomain dataDomain);
+
+    DataEntity toEntity(DataDomain dataDomain);
+
+    List<DataDomain> toDomainList(List<DataEntity> dataEntityList);
+
+    List<DataEntity> toEntityList(List<DataDomain> dataDomainList);
 }

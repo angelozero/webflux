@@ -7,20 +7,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
-public class SaveDataService {
+public class DeleteDataService {
 
+    private final FindDataByIdService findDataByIdService;
     private final DataRepository dataRepository;
     private final DataServiceMapper mapper;
 
     public void execute(DataDomain dataDomain) {
         try {
-            long id = (long) (Math.random() * (100));
-            Mono.just(dataRepository.save(mapper.toEntity(id, dataDomain)));
+            Mono<DataDomain> dataToBeDeleted = findDataByIdService.execute(dataDomain.getId());
+
+            if (Objects.nonNull(dataToBeDeleted)) {
+                dataToBeDeleted.flatMap(data -> dataRepository.delete(mapper.toEntity(data))).then(Mono.just(dataToBeDeleted));
+            }
 
         } catch (Exception ex) {
-            throw new RuntimeException("Erro ao salvar o dado");
+            throw new RuntimeException(String.format("Erro ao deletar o dado - id %s", dataDomain.getId()));
         }
     }
 }
